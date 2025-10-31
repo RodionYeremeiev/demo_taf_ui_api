@@ -9,11 +9,9 @@ on:
 jobs:
   test-and-report:
     runs-on: ubuntu-latest
-
     strategy:
       matrix:
-        module: [ui-tests, api-tests]
-
+        module: [ ui-tests, api-tests ]
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -33,3 +31,89 @@ jobs:
         with:
           name: ${{ matrix.module }}-allure-report
           path: ${{ matrix.module }}/target/site/allure-maven-plugin/
+
+      - name: Extract test stats from Allure results
+        id: test-results
+        run: |
+          RESULTS_DIR="/home/runner/work/demo_taf_ui_api/demo_taf_ui_api/${{ matrix.module }}/target/allure-results"
+          TOTAL=$(grep -o '"status":"' "$RESULTS_DIR"/*.json | wc -l)
+          PASSED=$(grep -o '"status":"passed"' "$RESULTS_DIR"/*.json | wc -l)
+          FAILED=$(grep -o '"status":"failed"' "$RESULTS_DIR"/*.json | wc -l)
+          BROKEN=$(grep -o '"status":"broken"' "$RESULTS_DIR"/*.json | wc -l)
+          SKIPPED=$(grep -o '"status":"skipped"' "$RESULTS_DIR"/*.json | wc -l)
+          echo "total=$TOTAL" >> $GITHUB_OUTPUT
+          echo "passed=$PASSED" >> $GITHUB_OUTPUT
+          echo "failures=$FAILED" >> $GITHUB_OUTPUT
+          echo "broken=$BROKEN" >> $GITHUB_OUTPUT
+          echo "skipped=$SKIPPED" >> $GITHUB_OUTPUT    
+
+      - name: Fail if Allure report contains broken tests
+        run: |
+          if [ "$BROKEN" -gt 0 ]; then
+            echo "❌ Found $BROKEN broken tests in Allure results"
+            exit 1
+          else
+            echo "✅ No broken tests found"
+          fi    
+
+  deploy-report:
+    needs: test-and-report
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        module: [ ui-tests, api-tests ]
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Download Allure report
+        uses: actions/download-artifact@v4
+        with:
+          name: ${{ matrix.module }}-allure-report
+          path: ./report
+
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./report
+          publish_branch: gh-pages
+          destination_dir: ${{ matrix.module }}
+
+      - name: Add summary with Allure report and test stats
+        if: always()
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const module = '${{ matrix.module }}';
+            const runUrl = `https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}`;
+            const pagesUrl = `https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/${module}/index.html`;
+
+            const total = '${{ steps.test-results.outputs.total }}';
+            const passed = '${{ steps.test-results.outputs.passed }}';
+            const failures = '${{ steps.test-results.outputs.failures }}';
+            const errors = '${{ steps.test-results.outputs.errors }}';
+            const broken = '${{ steps.test-results.outputs.broken }}';
+            const skipped = '${{ steps.test-results.outputs.skipped }}';
+
+            const markdownTable = `
+            | Item              | Value |
+            |-------------------|-------|
+            | Module            | ${module} |
+            | Java Version      | 21 |
+            | Test Command      | \`mvn -B -pl ${module} verify\` |
+            | Total Tests       | ${total} |
+            | Passed            | ${passed} |
+            | Failures          | ${failures} |
+            | Errors            | ${errors} |
+            | Broken            | ${broken} |
+            | Skipped           | ${skipped} |
+            | Artifact Download | [${module}-allure-report](${runUrl}) |
+            | Online Report     | [View on GitHub Pages](${pagesUrl}) |
+            `;
+            
+            core.summary
+            .addHeading(`🧪 Allure Report Summary: ${module}`)
+            .addRaw(markdownTable)
+            .addRaw(`\nThis summary includes test results and links to both the downloadable artifact and the live GitHub Pages report.`)
+            .write();
