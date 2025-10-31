@@ -36,3 +36,7 @@ build/
 
 ### Mac OS ###
 .DS_Store
+
+### Generated reports ###
+ui-tests/.allure
+api-tests/.allure
