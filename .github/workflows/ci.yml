@@ -33,12 +33,14 @@ jobs:
           name: ${{ matrix.module }}-allure-report
           path: ${{ matrix.module }}/target/site/allure-maven-plugin/
 
+      - name: Install jq
+        run: sudo apt-get install jq
+
       - name: Extract test stats from Allure results
         id: test-results
         run: |
           RESULTS_DIR="${{ github.workspace }}/${{ matrix.module }}/target/allure-results"
-          
-          TOTAL=$(jq -r '.name' "$RESULTS_DIR"/*.json | sort | uniq | wc -l)
+          TOTAL=$(jq -r 'select(.status) | .name' "$RESULTS_DIR"/*.json | sort | uniq | wc -l)
           PASSED=$(jq -r 'select(.status=="passed") | .name' "$RESULTS_DIR"/*.json | sort | uniq | wc -l)
           FAILED=$(jq -r 'select(.status=="failed") | .name' "$RESULTS_DIR"/*.json | sort | uniq | wc -l)
           BROKEN=$(jq -r 'select(.status=="broken") | .name' "$RESULTS_DIR"/*.json | sort | uniq | wc -l)
