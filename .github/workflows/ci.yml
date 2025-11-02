@@ -106,9 +106,14 @@ jobs:
         run: |
           FAILED=${{ steps.test-results.outputs.failed }}
           BROKEN=${{ steps.test-results.outputs.broken }}
-          if [ $((FAILED + BROKEN)) -gt 0 ]; then
-            echo "❌ Found $BROKEN broken tests in Allure results"
+          
+          echo "🔍 Checking test results for module: ${{ matrix.module }}"
+          echo "❌ Failed: $FAILED"
+          echo "⚠️ Broken: $BROKEN"
+          
+          if [ "$FAILED" -gt 0 ] || [ "$BROKEN" -gt 0 ]; then
+            echo "❌ Module '${{ matrix.module }}' has failed or broken tests."
             exit 1
           else
-            echo "✅ No broken tests found"
-          fi      
+            echo "✅ Module '${{ matrix.module }}' passed without failed or broken tests."
+          fi
