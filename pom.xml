@@ -10,8 +10,8 @@
     <packaging>pom</packaging>
 
     <modules>
-        <module>ui</module>
-        <module>api</module>
+        <module>ui-tests</module>
+        <module>api-tests</module>
     </modules>
 
     <properties>

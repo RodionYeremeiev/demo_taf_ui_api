@@ -8,12 +8,11 @@ on:
 
 jobs:
   test-and-report:
+    if: always()
     runs-on: ubuntu-latest
-
     strategy:
       matrix:
-        module: [ui-tests, api-tests]
-
+        module: [ ui-tests, api-tests ]
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -25,7 +24,9 @@ jobs:
           java-version: '21'
 
       - name: Run tests and generate Allure report
+        if: always()
         run: mvn -B -pl ${{ matrix.module }} verify
+        continue-on-error: true
 
       - name: Upload Allure HTML report
         if: always()
@@ -33,3 +34,104 @@ jobs:
         with:
           name: ${{ matrix.module }}-allure-report
           path: ${{ matrix.module }}/target/site/allure-maven-plugin/
+
+      - name: Install jq
+        if: always()
+        run: sudo apt-get install jq
+
+      - name: Extract test stats from Allure results
+        if: always()
+        id: test-results
+        run: |
+          RESULTS_DIR="${{ github.workspace }}/${{ matrix.module }}/target/allure-results"
+          TOTAL=$(jq -r 'select(.status) | .name' "$RESULTS_DIR"/*.json | sort | uniq | wc -l)
+          PASSED=$(jq -r 'select(.status=="passed") | .name' "$RESULTS_DIR"/*.json | sort | uniq | wc -l)
+          FAILED=$(jq -r 'select(.status=="failed") | .name' "$RESULTS_DIR"/*.json | sort | uniq | wc -l)
+          BROKEN=$(jq -r 'select(.status=="broken") | .name' "$RESULTS_DIR"/*.json | sort | uniq | wc -l)
+          SKIPPED=$(jq -r 'select(.status=="skipped") | .name' "$RESULTS_DIR"/*.json | sort | uniq | wc -l)
+          UNKNOWN=$(jq -r 'select(.status=="unknown") | .name' "$RESULTS_DIR"/*.json | sort | uniq | wc -l)
+          echo "total=$TOTAL" >> $GITHUB_OUTPUT
+          echo "passed=$PASSED" >> $GITHUB_OUTPUT
+          echo "failed=$FAILED" >> $GITHUB_OUTPUT
+          echo "broken=$BROKEN" >> $GITHUB_OUTPUT
+          echo "skipped=$SKIPPED" >> $GITHUB_OUTPUT    
+          echo "unknown=$UNKNOWN" >> $GITHUB_OUTPUT    
+
+      - name: Download Allure report
+        if: always()
+        uses: actions/download-artifact@v4
+        with:
+          name: ${{ matrix.module }}-allure-report
+          path: ./report
+
+      - name: Check for broken tests
+        if: always()
+        id: check-tests
+        run: |
+          FAILED=${{ steps.test-results.outputs.failed }}
+          BROKEN=${{ steps.test-results.outputs.broken }}
+          echo "failed=$FAILED" >> $GITHUB_OUTPUT
+          echo "broken=$BROKEN" >> $GITHUB_OUTPUT
+          if [ "$FAILED" -gt 0 ] || [ "$BROKEN" -gt 0 ]; then
+            echo "should_fail=true" >> $GITHUB_ENV
+          else
+            echo "should_fail=false" >> $GITHUB_ENV
+          fi      
+
+      - name: Deploy to GitHub Pages
+        if: always()
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./report
+          publish_branch: gh-pages
+          destination_dir: ${{ matrix.module }}
+
+      - name: Add summary with Allure report and test stats
+        if: always()
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const module = '${{ matrix.module }}';
+            const runUrl = `https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}`;
+            const pagesUrl = `https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/${module}/index.html`;
+
+            const total = '${{ steps.test-results.outputs.total }}';
+            const passed = '${{ steps.test-results.outputs.passed }}';
+            const failed = '${{ steps.test-results.outputs.failed }}';
+            const broken = '${{ steps.test-results.outputs.broken }}';
+            const skipped = '${{ steps.test-results.outputs.skipped }}';
+            const unknown = '${{ steps.test-results.outputs.unknown }}';
+
+            const markdownTable = `
+            | Item              | Value |
+            |-------------------|-------|
+            | Module            | ${module} |
+            | Total Tests       | ${total} |
+            | Passed            | ${passed} |
+            | Failed            | ${failed} |
+            | Broken            | ${broken} |
+            | Skipped           | ${skipped} |
+            | Unknown           | ${unknown} |
+            | Artifact Download | [${module}-allure-report](${runUrl}) |
+            | Online Report     | [View on GitHub Pages](${pagesUrl}) |
+            `;
+            
+            core.summary
+            .addHeading(`🧪 Allure Report Summary: ${module}`)
+            .addRaw(markdownTable)
+            .addRaw(`\nThis summary includes test results and links to both the downloadable artifact and the live GitHub Pages report.`)
+            .write();
+
+      - name: Fail if Allure report contains broken tests
+        if: always()
+        run: |
+          echo "🔍 Checking test results for module: ${{ matrix.module }}"
+          echo "❌ Failed: $FAILED"
+          echo "⚠️ Broken: $BROKEN"
+          if [ "$should_fail" == "true" ]; then
+            echo "❌ Module '${{ matrix.module }}' has failed or broken tests."
+            exit 1
+          else
+            echo "✅ Module '${{ matrix.module }}' passed without failed or broken tests."
+          fi

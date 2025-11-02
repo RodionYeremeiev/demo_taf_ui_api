@@ -16,8 +16,8 @@ mkdir -p $MERGED_DIR
 
 # Copy results from each module
 echo "Collecting Allure results..."
-cp -r ui/target/allure-results/* $MERGED_DIR/ 2>/dev/null || echo "No UI results found"
-cp -r api/target/allure-results/* $MERGED_DIR/ 2>/dev/null || echo "No API results found"
+cp -r ui-tests/target/allure-results/* $MERGED_DIR/ 2>/dev/null || echo "No UI results found"
+cp -r api-tests/target/allure-results/* $MERGED_DIR/ 2>/dev/null || echo "No API results found"
 
 # Generate HTML report
 echo "Generating Allure HTML report..."
