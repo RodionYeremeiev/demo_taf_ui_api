@@ -37,12 +37,13 @@ jobs:
         id: test-results
         run: |
           RESULTS_DIR="${{ github.workspace }}/${{ matrix.module }}/target/allure-results"
-          TOTAL=$(grep -o '"status":"' "$RESULTS_DIR"/*.json | wc -l)
-          PASSED=$(grep -o '"status":"passed"' "$RESULTS_DIR"/*.json | wc -l)
-          FAILED=$(grep -o '"status":"failed"' "$RESULTS_DIR"/*.json | wc -l)
-          BROKEN=$(grep -o '"status":"broken"' "$RESULTS_DIR"/*.json | wc -l)
-          SKIPPED=$(grep -o '"status":"skipped"' "$RESULTS_DIR"/*.json | wc -l)
-          UNKNOWN=$(grep -o '"status":"unknown"' "$RESULTS_DIR"/*.json | wc -l)
+          
+          TOTAL=$(jq -r '.name' "$RESULTS_DIR"/*.json | sort | uniq | wc -l)
+          PASSED=$(jq -r 'select(.status=="passed") | .name' "$RESULTS_DIR"/*.json | sort | uniq | wc -l)
+          FAILED=$(jq -r 'select(.status=="failed") | .name' "$RESULTS_DIR"/*.json | sort | uniq | wc -l)
+          BROKEN=$(jq -r 'select(.status=="broken") | .name' "$RESULTS_DIR"/*.json | sort | uniq | wc -l)
+          SKIPPED=$(jq -r 'select(.status=="skipped") | .name' "$RESULTS_DIR"/*.json | sort | uniq | wc -l)
+          UNKNOWN=$(jq -r 'select(.status=="unknown") | .name' "$RESULTS_DIR"/*.json | sort | uniq | wc -l)
           echo "total=$TOTAL" >> $GITHUB_OUTPUT
           echo "passed=$PASSED" >> $GITHUB_OUTPUT
           echo "failed=$FAILED" >> $GITHUB_OUTPUT
