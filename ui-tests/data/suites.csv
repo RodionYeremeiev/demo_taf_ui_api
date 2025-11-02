@@ -1,4 +1,4 @@
 "DESCRIPTION","DURATION IN MS","NAME","PARENT SUITE","START TIME","STATUS","STOP TIME","SUB SUITE","SUITE","TEST CLASS","TEST METHOD"
-"","7854","search()","","Sun Nov 02 19:25:06 UTC 2025","broken","Sun Nov 02 19:25:14 UTC 2025","","org.example.ui.MainPageTest","org.example.ui.MainPageTest","search"
-"","200","navigationToAllTools()","","Sun Nov 02 19:25:14 UTC 2025","broken","Sun Nov 02 19:25:14 UTC 2025","","org.example.ui.MainPageTest","org.example.ui.MainPageTest","navigationToAllTools"
-"","203","toolsMenu()","","Sun Nov 02 19:25:14 UTC 2025","broken","Sun Nov 02 19:25:14 UTC 2025","","org.example.ui.MainPageTest","org.example.ui.MainPageTest","toolsMenu"
+"","215","toolsMenu()","","Sun Nov 02 19:51:15 UTC 2025","broken","Sun Nov 02 19:51:15 UTC 2025","","org.example.ui.MainPageTest","org.example.ui.MainPageTest","toolsMenu"
+"","199","navigationToAllTools()","","Sun Nov 02 19:51:15 UTC 2025","broken","Sun Nov 02 19:51:15 UTC 2025","","org.example.ui.MainPageTest","org.example.ui.MainPageTest","navigationToAllTools"
+"","1915","search()","","Sun Nov 02 19:51:13 UTC 2025","broken","Sun Nov 02 19:51:15 UTC 2025","","org.example.ui.MainPageTest","org.example.ui.MainPageTest","search"
