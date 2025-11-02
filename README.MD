@@ -38,6 +38,8 @@ This project is a scalable, modular test automation framework built with Maven. 
 - Generates unified HTML report in `merged-report/`
 - Automatically opens the report in your browser
 
+# after report is closed Press <Ctrl+C> to stop started Allure Server and exit
+
 ---
 
 ### ⚙️ CI Integration
