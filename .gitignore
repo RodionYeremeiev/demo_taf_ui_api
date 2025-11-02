@@ -40,3 +40,5 @@ build/
 ### Generated reports ###
 ui-tests/.allure
 api-tests/.allure
+/merged-report
+/merged-results
