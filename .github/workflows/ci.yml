@@ -24,19 +24,23 @@ jobs:
           java-version: '21'
 
       - name: Run tests and generate Allure report
+        if: always()
         run: mvn -B -pl ${{ matrix.module }} verify
         continue-on-error: true
 
       - name: Upload Allure HTML report
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: ${{ matrix.module }}-allure-report
           path: ${{ matrix.module }}/target/site/allure-maven-plugin/
 
       - name: Install jq
+        if: always()
         run: sudo apt-get install jq
 
       - name: Extract test stats from Allure results
+        if: always()
         id: test-results
         run: |
           RESULTS_DIR="${{ github.workspace }}/${{ matrix.module }}/target/allure-results"
@@ -54,12 +58,28 @@ jobs:
           echo "unknown=$UNKNOWN" >> $GITHUB_OUTPUT    
 
       - name: Download Allure report
+        if: always()
         uses: actions/download-artifact@v4
         with:
           name: ${{ matrix.module }}-allure-report
           path: ./report
 
+      - name: Check for broken tests
+        if: always()
+        id: check-tests
+        run: |
+          FAILED=${{ steps.test-results.outputs.failed }}
+          BROKEN=${{ steps.test-results.outputs.broken }}
+          echo "failed=$FAILED" >> $GITHUB_OUTPUT
+          echo "broken=$BROKEN" >> $GITHUB_OUTPUT
+          if [ "$FAILED" -gt 0 ] || [ "$BROKEN" -gt 0 ]; then
+            echo "should_fail=true" >> $GITHUB_ENV
+          else
+            echo "should_fail=false" >> $GITHUB_ENV
+          fi      
+
       - name: Deploy to GitHub Pages
+        if: always()
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
@@ -68,6 +88,7 @@ jobs:
           destination_dir: ${{ matrix.module }}
 
       - name: Add summary with Allure report and test stats
+        if: always()
         uses: actions/github-script@v7
         with:
           script: |
@@ -86,8 +107,6 @@ jobs:
             | Item              | Value |
             |-------------------|-------|
             | Module            | ${module} |
-            | Java Version      | 21 |
-            | Test Command      | \`mvn -B -pl ${module} verify\` |
             | Total Tests       | ${total} |
             | Passed            | ${passed} |
             | Failed            | ${failed} |
@@ -107,14 +126,10 @@ jobs:
       - name: Fail if Allure report contains broken tests
         if: always()
         run: |
-          FAILED=${{ steps.test-results.outputs.failed }}
-          BROKEN=${{ steps.test-results.outputs.broken }}
-          
           echo "🔍 Checking test results for module: ${{ matrix.module }}"
           echo "❌ Failed: $FAILED"
           echo "⚠️ Broken: $BROKEN"
-          
-          if [ "$FAILED" -gt 0 ] || [ "$BROKEN" -gt 0 ]; then
+          if [ "$should_fail" == "true" ]; then
             echo "❌ Module '${{ matrix.module }}' has failed or broken tests."
             exit 1
           else
