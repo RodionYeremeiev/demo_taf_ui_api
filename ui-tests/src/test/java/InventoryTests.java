@@ -1,5 +1,8 @@
+import io.qameta.allure.Severity;
+import io.qameta.allure.SeverityLevel;
 import io.qameta.allure.Step;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import pages.InventoryPage;
 
@@ -8,6 +11,7 @@ public class InventoryTests extends BaseUITest{
     InventoryPage inventoryPage = new InventoryPage();
 
     @Test
+    @DisplayName("Sort products by price low to high")
     public void sortByPriceLowToHigh() {
         standardLogin();
         verifyProductPrice("$29.99");
@@ -16,6 +20,7 @@ public class InventoryTests extends BaseUITest{
     }
 
     @Test
+    @DisplayName("Inventory page loads all products")
     public void inventoryLoadsAllProducts() {
         standardLogin();
         inventoryPage.shouldDisplayAllProducts(6);

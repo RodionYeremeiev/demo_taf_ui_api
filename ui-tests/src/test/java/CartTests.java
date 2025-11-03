@@ -1,6 +1,8 @@
 import static com.codeborne.selenide.Condition.*;
 
 import com.codeborne.selenide.CollectionCondition;
+import io.qameta.allure.Severity;
+import io.qameta.allure.SeverityLevel;
 import org.junit.jupiter.api.*;
 import pages.CartPage;
 import pages.InventoryPage;
@@ -17,6 +19,7 @@ public class CartTests extends BaseUITest {
     }
 
     @Test
+    @DisplayName("Add product to cart and verify cart badge")
     void addProductToCart() {
         standardLogin();
         inventoryPage.addFirstProductToCart();
@@ -26,6 +29,7 @@ public class CartTests extends BaseUITest {
     }
 
     @Test
+    @DisplayName("Remove product from cart and verify cart is empty")
     void removeProductFromCart() {
         standardLogin();
         inventoryPage.addFirstProductToCart();
