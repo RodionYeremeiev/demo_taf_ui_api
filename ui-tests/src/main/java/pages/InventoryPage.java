@@ -1,10 +1,10 @@
 package pages;
 
+import static com.codeborne.selenide.Selenide.$;
+
 import com.codeborne.selenide.*;
 import io.qameta.allure.Step;
 import lombok.NoArgsConstructor;
-
-import static com.codeborne.selenide.Selenide.$;
 
 @NoArgsConstructor
 public class InventoryPage {
@@ -16,8 +16,6 @@ public class InventoryPage {
     private final SelenideElement cartBadge = $(".shopping_cart_badge");
 
     private final SelenideElement cartIcon = $(".shopping_cart_link");
-
-    public static final String BTN_INVENTORY = ".btn_inventory";
 
     @Step("sort by {optionText} text")
     public void sortBy(String optionText) {
@@ -36,11 +34,6 @@ public class InventoryPage {
     public String getFirstProductPrice() {
         return productList.first().$(".inventory_item_price").getText();
     }
-
-    public int getProductCount() {
-        return productList.size();
-    }
-
 
     @Step("open cart")
     public void goToCart() {
