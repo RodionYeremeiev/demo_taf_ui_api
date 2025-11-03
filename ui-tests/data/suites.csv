@@ -1,0 +1,3 @@
+"DESCRIPTION","DURATION IN MS","NAME","PARENT SUITE","START TIME","STATUS","STOP TIME","SUB SUITE","SUITE","TEST CLASS","TEST METHOD"
+"","6233","loginWithValidCredentials()","","Mon Nov 03 18:13:56 UTC 2025","broken","Mon Nov 03 18:14:03 UTC 2025","","LoginTests","LoginTests","loginWithValidCredentials"
+"","218","loginWithInvalidCredentials()","","Mon Nov 03 18:14:03 UTC 2025","broken","Mon Nov 03 18:14:03 UTC 2025","","LoginTests","LoginTests","loginWithInvalidCredentials"
