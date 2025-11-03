@@ -8,7 +8,7 @@ public abstract class BaseUITest {
   @BeforeAll
   public static void globalSetup() {
     Configuration.browser = "chrome";
-    Configuration.headless = false;
+    Configuration.headless = true;
     Configuration.browserSize = "1920x1080";
     Configuration.timeout = 5000;
     Configuration.pageLoadStrategy = "normal"; // or "eager", "none"
