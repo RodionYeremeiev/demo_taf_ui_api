@@ -5,7 +5,7 @@ set -e
 
 # Clean and run tests
 echo "Running tests for all modules..."
-mvn clean verify
+mvn clean verify -Dheadless=false
 
 # Prepare merged results folder
 MERGED_DIR="merged-results"

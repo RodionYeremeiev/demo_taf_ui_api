@@ -29,7 +29,7 @@ jobs:
 
       - name: Run tests and generate Allure report
         if: always()
-        run: mvn -B -pl ${{ matrix.module }} verify
+        run: mvn -B -pl ${{ matrix.module }} verify -Dheadless=true;
         continue-on-error: true
 
       - name: Upload Allure HTML report
