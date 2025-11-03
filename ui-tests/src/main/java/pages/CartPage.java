@@ -3,6 +3,7 @@ package pages;
 import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.ElementsCollection;
 import com.codeborne.selenide.SelenideElement;
+import io.qameta.allure.Step;
 
 import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.$$;
@@ -13,6 +14,7 @@ public class CartPage {
     public SelenideElement checkoutButton = $("#checkout");
     public SelenideElement cartBadge = $(".shopping_cart_badge");
 
+    @Step("Remove item from cart")
     public void removeItem() {
         removeButton.click();
     }
@@ -24,8 +26,9 @@ public class CartPage {
     public int getCartItemCount() {
         return cartItems.size();
     }
-
-    public void cartBadgeNumberShouldDisappear(){
+    
+    @Step("Cart icon item counter should disappear")
+    public void cartBadgeNumberShouldDisappear() {
         cartBadge.shouldNotBe(Condition.visible);
     }
 }
