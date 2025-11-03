@@ -1,3 +1,3 @@
 "DESCRIPTION","DURATION IN MS","NAME","PARENT SUITE","START TIME","STATUS","STOP TIME","SUB SUITE","SUITE","TEST CLASS","TEST METHOD"
-"","17132","loginWithValidCredentials()","","Mon Nov 03 19:13:21 UTC 2025","passed","Mon Nov 03 19:13:38 UTC 2025","","LoginTests","LoginTests","loginWithValidCredentials"
-"","1029","loginWithInvalidCredentials()","","Mon Nov 03 19:13:38 UTC 2025","passed","Mon Nov 03 19:13:40 UTC 2025","","LoginTests","LoginTests","loginWithInvalidCredentials"
+"","934","loginWithInvalidCredentials()","","Mon Nov 03 20:15:59 UTC 2025","passed","Mon Nov 03 20:16:00 UTC 2025","","LoginTests","LoginTests","loginWithInvalidCredentials"
+"","29175","loginWithValidCredentials()","","Mon Nov 03 20:15:30 UTC 2025","passed","Mon Nov 03 20:15:59 UTC 2025","","LoginTests","LoginTests","loginWithValidCredentials"
