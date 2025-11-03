@@ -23,6 +23,10 @@ jobs:
           distribution: 'temurin'
           java-version: '21'
 
+      - name: Clean previous Allure results
+        if: always()
+        run: rm -rf ${{ matrix.module }}/target/allure-results
+
       - name: Run tests and generate Allure report
         if: always()
         run: mvn -B -pl ${{ matrix.module }} verify
@@ -55,14 +59,18 @@ jobs:
           echo "failed=$FAILED" >> $GITHUB_OUTPUT
           echo "broken=$BROKEN" >> $GITHUB_OUTPUT
           echo "skipped=$SKIPPED" >> $GITHUB_OUTPUT    
-          echo "unknown=$UNKNOWN" >> $GITHUB_OUTPUT    
+          echo "unknown=$UNKNOWN" >> $GITHUB_OUTPUT
+
+      - name: Debug Allure results
+        if: always()
+        run: ls -la ${{ github.workspace }}/${{ matrix.module }}/target/allure-results
 
       - name: Download Allure report
         if: always()
         uses: actions/download-artifact@v4
         with:
           name: ${{ matrix.module }}-allure-report
-          path: ./report
+          path: ./report/${{ matrix.module }}
 
       - name: Check for broken tests
         if: always()
@@ -83,7 +91,7 @@ jobs:
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./report
+          publish_dir: ./report/${{ matrix.module }}
           publish_branch: gh-pages
           destination_dir: ${{ matrix.module }}
 
