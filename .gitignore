@@ -37,8 +37,10 @@ build/
 ### Mac OS ###
 .DS_Store
 
-### Generated reports ###
-ui-tests/.allure
-api-tests/.allure
-/merged-report
-/merged-results
+# Ignore merged Allure results and report
+merged-results/
+merged-report/
+
+# Ignore module-specific Allure results
+**/target/allure-results/
+
