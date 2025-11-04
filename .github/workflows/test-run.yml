@@ -35,11 +35,11 @@ jobs:
 
       - name: Run UI Tests
         if: ${{ github.event.inputs.module == 'ui' }}
-        run: mvn -f ui-tests/pom.xml clean test -Dheadless=true
+        run: mvn -f ui-tests/pom.xml clean test -Dheadless=true -Dui.standard.user=${{ secrets.STD_USER_NAME }} -Dui.valid.password=${{ secrets.STD_PASSWORD }} -Dui.locked.user=${{ secrets.LOCKED_USER_NAME }}
 
       - name: Run API Tests
         if: ${{ github.event.inputs.module == 'api' }}
-        run: mvn -f api-tests/pom.xml clean test
+        run: mvn -f api-tests/pom.xml clean test -Dapi.key=${{ secrets.VALID_API_KEY }}
 
       - name: Generate Allure Report
         run: |
