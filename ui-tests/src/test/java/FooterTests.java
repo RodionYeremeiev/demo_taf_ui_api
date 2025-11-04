@@ -10,6 +10,7 @@ public class FooterTests extends BaseUITest{
     public void footerLinksOpenCorrectPages() {
         standardLogin();
         loginPage.scrollToFooter();
+        attachScreenshot("State after scrolling to footer");
         verifyTwitterFooterLogoIsDisplayed();
         verifyFacebookFooterLogoIsDisplayed();
         verifyLinkedInFooterLogoIsDisplayed();

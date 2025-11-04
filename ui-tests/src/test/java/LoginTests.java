@@ -27,6 +27,7 @@ public class LoginTests extends BaseUITest {
   void logoutWithInvalidCredentials() {
     standardLogin();
     inventoryPage.clickBurgerMenu();
+    attachScreenshot("State after burger menu clicked");
     inventoryPage.clickLogoutSideBarLink();
     loginButtonShouldBeVisible();
   }

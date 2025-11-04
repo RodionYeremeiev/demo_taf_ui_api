@@ -37,6 +37,7 @@ public abstract class BaseUITest {
   @Step("Login as standard_user user")
   public void standardLogin() {
     login("standard_user", "secret_sauce");
+    attachScreenshot("Initial state after Login");
   }
 
   @Step("Login as locked_out_user user")
@@ -52,9 +53,21 @@ public abstract class BaseUITest {
   }
 
   @Step("Attach {name} screenshot")
-  protected void attachScreenshot(String name) {
+  public void attachScreenshot(String name) {
     byte[] screenshot =
         ((TakesScreenshot) WebDriverRunner.getWebDriver()).getScreenshotAs(OutputType.BYTES);
     Allure.getLifecycle().addAttachment(name, "image/png", "png", screenshot);
+  }
+
+  public void attachInventoryScreenshotAfterProductAdded() {
+    attachScreenshot("Inventory State after adding first product");
+  }
+
+  public void attachCartScreenshotAfterProductAdded() {
+    attachScreenshot("Cart State after adding first product");
+  }
+
+  public void attachInitialCheckoutScreenshot() {
+    attachScreenshot("Initial Checkout State");
   }
 }

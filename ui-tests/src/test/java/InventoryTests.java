@@ -12,8 +12,8 @@ public class InventoryTests extends BaseUITest{
     @DisplayName("Sort products by price low to high")
     public void sortByPriceLowToHigh() {
         standardLogin();
-        attachScreenshot("Inventory before sorting");
         verifyProductPrice("$29.99");
+        attachScreenshot("Initial state after sort by price low to high");
         inventoryPage.sortByPriceLowToHigh();
         verifyProductPrice("$7.99");
     }

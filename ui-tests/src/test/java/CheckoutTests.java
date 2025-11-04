@@ -1,4 +1,3 @@
-import com.codeborne.selenide.Condition;
 import io.qameta.allure.Step;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -26,10 +25,15 @@ public class CheckoutTests extends BaseUITest {
     public void completeCheckoutFlow() {
         standardLogin();
         inventoryPage.addFirstProductToCart();
+        attachInventoryScreenshotAfterProductAdded();
         inventoryPage.goToCart();
+        attachCartScreenshotAfterProductAdded();
         cartPage.proceedToCheckout();
+        attachInitialCheckoutScreenshot();
         checkoutPage.fillInfo("John", "Doe", "01001");
+        attachScreenshot("Checkout State after info filled");
         checkoutPage.continueCheckout();
+        attachScreenshot("Checkout State after continue");
         checkoutPage.finishCheckout();
         verifyCheckoutSuccess();
     }
@@ -39,9 +43,13 @@ public class CheckoutTests extends BaseUITest {
     public void checkoutMissingInfo() {
         standardLogin();
         inventoryPage.addFirstProductToCart();
+        attachInventoryScreenshotAfterProductAdded();
         inventoryPage.goToCart();
+        attachCartScreenshotAfterProductAdded();
         cartPage.proceedToCheckout();
+        attachInitialCheckoutScreenshot();
         checkoutPage.continueCheckout();
+        attachScreenshot("Checkout State after continue without information");
         verifyCheckoutFailed();
     }
 
