@@ -5,12 +5,15 @@ import com.codeborne.selenide.logevents.SelenideLogger;
 import io.qameta.allure.Allure;
 import io.qameta.allure.Step;
 import io.qameta.allure.selenide.AllureSelenide;
+import util.AllureScreenshotExtension;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
 import pages.LoginPage;
 
+@ExtendWith(AllureScreenshotExtension.class)
 public abstract class BaseUITest {
 
   LoginPage loginPage;
