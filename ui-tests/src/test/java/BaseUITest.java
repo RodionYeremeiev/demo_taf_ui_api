@@ -11,7 +11,7 @@ import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
 import pages.LoginPage;
 
-public class BaseUITest {
+public abstract class BaseUITest {
 
   LoginPage loginPage;
 
