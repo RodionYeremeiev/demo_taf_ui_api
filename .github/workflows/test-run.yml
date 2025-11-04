@@ -11,10 +11,6 @@ on:
         options:
           - ui
           - api
-      branch:
-        description: 'Branch to run tests from'
-        required: true
-        default: 'master'
 
 jobs:
   run-tests:

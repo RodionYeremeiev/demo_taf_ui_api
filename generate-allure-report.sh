@@ -5,8 +5,7 @@ set -e
 
 # Clean and run tests
 echo "Running tests for all modules..."
-mvn clean verify -Dheadless=false
-
+mvn clean verify -Dheadless=false -Dui.standard.user=your_standard_user -Dui.valid.password=your_valid_password -Dui.locked.user=your_locked_user_name -Dapi.key=your_valid_api_key
 # Prepare merged results folder
 MERGED_DIR="merged-results"
 echo "Removing merged-results folder from previous run..."

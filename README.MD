@@ -32,6 +32,10 @@ This project is a scalable, modular test automation framework built with Maven. 
 ```bash
 # Run all tests and generate reports
 ./generate-allure-report.sh
+
+!!! IMPORTANT !!!
+before run update ceresentials used in command:
+mvn clean verify -Dheadless=false -Dui.standard.user=standard_user -Dui.valid.password=your_valid_password -Dui.locked.user=your_locked_user_name -Dapi.key=your_valid_api_key;
 ```
 
 - Merges results from both modules
@@ -42,17 +46,16 @@ This project is a scalable, modular test automation framework built with Maven. 
 
 ---
 
+# To run specific module individually:
+- use Run UI or API Tests pipeline (defined in test-run.yml) for cpecific module and branch
+- via mvn command (UI): mvn -f ui-tests/pom.xml clean test -Dheadless=true -Dui.standard.user=${{ secrets.STD_USER_NAME }} -Dui.valid.password=${{ secrets.STD_PASSWORD }} -Dui.locked.user=${{ secrets.LOCKED_USER_NAME }};
+- via mvn command (API): mvn -f api-tests/pom.xml clean test -Dapi.key=${{ secrets.VALID_API_KEY }};
+
 ### ⚙️ CI Integration
 
 GitHub Actions runs tests for both modules and publishes Allure reports as downloadable artifacts:
-
-```yaml
-- name: Upload Allure HTML report
-  uses: actions/upload-artifact@v4
-  with:
-    name: ui-tests-allure-report
-    path: ui-tests/target/site/allure-maven-plugin/
-```
+ - Run UI or API Tests pipeline (defined in test-run.yml)
+ - Automatic matrix pipeline execute test in parallel mode for both modules for verification of pull request or push to master (defined in ci.yml)
 
 ---
 
@@ -61,13 +64,23 @@ GitHub Actions runs tests for both modules and publishes Allure reports as downl
 ```
 automation-project/
 ├── ui-tests/
-│   └── target/site/allure-maven-plugin/index.html
+│   └── src/main/java
+│   │   └── src/main/java/pages (POM)
+│   │   └── src/main/java/util (Utils)
+│   └── src/test/java (UI Test Classes)
+│   └── src/main/resources
+│   
 ├── api-tests/
-│   └── target/site/allure-maven-plugin/index.html
+│   └── src/main/java
+│   │   └── src/main/java/model (Entity models)
+│   └── src/test/java (API Test Classes)
+│   └── src/main/resources
+│   
 ├── merged-report/
 │   └── index.html
 ├── generate-allure-report.sh
 └── .github/workflows/ci.yml
+└── .github/workflows/test-run.yml
 ```
 
 ---
