@@ -29,7 +29,7 @@ jobs:
 
       - name: Run UI Tests
         if: ${{ github.event.inputs.module == 'ui' }}
-        run: mvn -f ui-tests/pom.xml clean test
+        run: mvn -f ui-tests/pom.xml clean test -Dheadless=true
 
       - name: Run API Tests
         if: ${{ github.event.inputs.module == 'api' }}
