@@ -11,6 +11,10 @@ on:
         options:
           - ui
           - api
+      branch:
+        description: 'Branch to run tests from'
+        required: true
+        default: 'master'
 
 jobs:
   run-tests:
@@ -20,6 +24,8 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+        with:
+         ref: ${{ github.event.inputs.branch }}
 
       - name: Set up JDK
         uses: actions/setup-java@v4
