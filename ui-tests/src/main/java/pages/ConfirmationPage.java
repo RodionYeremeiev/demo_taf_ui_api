@@ -9,13 +9,8 @@ import static com.codeborne.selenide.Selenide.$;
 public class ConfirmationPage {
     public SelenideElement confirmationMessage = $(".complete-header");
 
-    @Step("Verify checkout successfully completed")
-    public void verifyCheckoutSuccess() {
+    public String getConfirmationMessage() {
         confirmationMessage.shouldBe(Condition.visible);
-        confirmationMessage.shouldHave(Condition.text("THANK YOU FOR YOUR ORDER"));
-    }
-
-    public String getMessage() {
         return confirmationMessage.getText();
     }
 }

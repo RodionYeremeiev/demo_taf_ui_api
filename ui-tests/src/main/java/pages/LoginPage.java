@@ -5,7 +5,6 @@ import static com.codeborne.selenide.Selenide.*;
 import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.SelenideElement;
 import io.qameta.allure.Step;
-import java.util.stream.Stream;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor
@@ -33,42 +32,36 @@ public class LoginPage {
     loginButton.click();
   }
 
-  @Step("Should display login failed error")
-  public void shouldSeeError(String message) {
-    errorMessage.shouldHave(Condition.text(message));
-  }
-
-  @Step("Should login successfully")
-  public void shouldBeLoggedIn() {
-    inventoryContainer.shouldBe(Condition.visible);
-  }
-
   @Step("Scroll to footer")
   public void scrollToFooter() {
     pageFooter.scrollTo();
   }
 
-  @Step("Verify footer contains {logoName} logo for redirect")
-  public void verifyFooterLogoElement(String logoName) {
-    SelenideElement elementToCheck = getFooterElementByName(logoName);
-    elementToCheck.shouldBe(Condition.visible);
+  public boolean isElementDisplayed(SelenideElement element) {
+    return element.isDisplayed();
   }
 
-  public void verifyFooterLogoElement() {
-    Stream.of("facebook", "linkedin", "twitter").forEach(this::verifyFooterLogoElement);
+  public boolean isTwitterLogoDisplayed(){
+    return isElementDisplayed(twitterFooterLogo);
   }
 
-  private SelenideElement getFooterElementByName(String logoName) {
-    return switch (logoName.toLowerCase()) {
-      case "facebook" -> facebookFooterLogo;
-      case "twitter" -> twitterFooterLogo;
-      case "linkedin" -> linkedinFooterLogo;
-      default -> throw new IllegalStateException("Unexpected value: " + logoName.toLowerCase());
-    };
+  public boolean isFaceBookLogoDisplayed(){
+    return isElementDisplayed(facebookFooterLogo);
   }
 
-  @Step("Verify login button is displayed")
-  public void loginButtonShouldBeVisible() {
-    loginButton.shouldBe(Condition.visible);
+  public boolean isLinkedInLogoDisplayed(){
+    return isElementDisplayed(linkedinFooterLogo);
+  }
+
+  public boolean isLoginButtonDisplayed() {
+    return loginButton.isDisplayed();
+  }
+
+  public boolean isErrorMessageDisplayed(String message) {
+    return errorMessage.isDisplayed() && errorMessage.is(Condition.text(message));
+  }
+
+  public boolean isInventoryContainerVisible() {
+    return inventoryContainer.isDisplayed();
   }
 }

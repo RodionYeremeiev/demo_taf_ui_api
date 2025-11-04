@@ -13,6 +13,7 @@ public class InventoryTests extends BaseUITest{
     public void sortByPriceLowToHigh() {
         standardLogin();
         verifyProductPrice("$29.99");
+        attachScreenshot("Initial state after sort by price low to high");
         inventoryPage.sortByPriceLowToHigh();
         verifyProductPrice("$7.99");
     }
@@ -21,11 +22,18 @@ public class InventoryTests extends BaseUITest{
     @DisplayName("Inventory page loads all products")
     public void inventoryLoadsAllProducts() {
         standardLogin();
-        inventoryPage.shouldDisplayAllProducts(6);
+        shouldDisplayAllProducts(6);
     }
 
     @Step("Verify product price is {expected}")
     private void verifyProductPrice(String expected) {
         Assertions.assertEquals(expected, inventoryPage.getFirstProductPrice());
+    }
+
+    @Step("Product list should display all {expectedCount} products")
+    public void shouldDisplayAllProducts(int expectedCount) {
+        Assertions.assertTrue(
+                inventoryPage.isAllProductsDisplayed(expectedCount),
+                "Error: All products should be displayed");
     }
 }

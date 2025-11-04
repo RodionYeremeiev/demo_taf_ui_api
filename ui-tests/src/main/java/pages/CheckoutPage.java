@@ -8,12 +8,12 @@ import static com.codeborne.selenide.Selenide.$;
 
 public class CheckoutPage {
 
-    public SelenideElement firstName = $("#first-name");
-    public SelenideElement lastName = $("#last-name");
-    public SelenideElement zipCode = $("#postal-code");
-    public SelenideElement continueButton = $("#continue");
-    public SelenideElement finishButton = $("#finish");
-    public SelenideElement errorMessage = $(".error-message-container");
+    private final SelenideElement firstName = $("#first-name");
+    private final SelenideElement lastName = $("#last-name");
+    private final SelenideElement zipCode = $("#postal-code");
+    private final SelenideElement continueButton = $("#continue");
+    private final SelenideElement finishButton = $("#finish");
+    private final SelenideElement errorMessage = $(".error-message-container");
 
     @Step("Fill checkout info")
     public void fillInfo(String first, String last, String zip) {
@@ -32,9 +32,9 @@ public class CheckoutPage {
         finishButton.click();
     }
 
-    @Step("Verify checkout failed")
-    public void verifyCheckoutFailed() {
+    public String getErrorMessage() {
         errorMessage.shouldBe(Condition.visible);
         errorMessage.shouldHave(Condition.text("Error: First Name is required"));
+        return errorMessage.getText();
     }
 }

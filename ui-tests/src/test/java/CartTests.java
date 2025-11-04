@@ -1,6 +1,4 @@
-import static com.codeborne.selenide.Condition.*;
-
-import com.codeborne.selenide.CollectionCondition;
+import io.qameta.allure.Step;
 import org.junit.jupiter.api.*;
 import pages.CartPage;
 import pages.InventoryPage;
@@ -21,9 +19,10 @@ public class CartTests extends BaseUITest {
     void addProductToCart() {
         standardLogin();
         inventoryPage.addFirstProductToCart();
-        inventoryPage.shouldSeeCartBadge("1");
+        attachInventoryScreenshotAfterProductAdded();
+        verifyCartBadgeNumberDisplayed();
         inventoryPage.goToCart();
-        cartPage.cartItems.first().shouldBe(visible);
+        verifyCartItemAdded();
     }
 
     @Test
@@ -31,9 +30,38 @@ public class CartTests extends BaseUITest {
     void removeProductFromCart() {
         standardLogin();
         inventoryPage.addFirstProductToCart();
+        attachInventoryScreenshotAfterProductAdded();
         inventoryPage.goToCart();
+        attachCartScreenshotAfterProductAdded();
+        verifyCartItemAdded();
         cartPage.removeItem();
-        cartPage.cartItems.shouldHave(CollectionCondition.size(0));
-        cartPage.cartBadgeNumberShouldDisappear();
+        verifyCartItemRemoved();
+        cartBadgeNumberDisappear();
+    }
+
+    @Step("Cart badge should display product count {expectedCount}")
+    private void verifyCartBadgeNumberDisplayed() {
+        Assertions.assertTrue(
+                inventoryPage.isCartBadgeCountDisplayed("1"),
+                "Error: Cart badge count is not displayed");
+    }
+
+    @Step("Verify Cart item added to cart")
+    private void verifyCartItemAdded() {
+        Assertions.assertTrue(
+                cartPage.isFirstCartItemDisplayed(),
+                "Error: Cart item is not displayed");
+    }
+
+    @Step("Verify Cart item removed to cart")
+    private void verifyCartItemRemoved() {
+        Assertions.assertFalse(
+                cartPage.isFirstCartItemDisplayed(),
+                "Error: Cart item is still displayed");
+    }
+
+    @Step("Verify Cart counter longer visible")
+    private void cartBadgeNumberDisappear() {
+        Assertions.assertFalse(cartPage.isCartBadgeCountDisplayed());
     }
 }

@@ -5,12 +5,15 @@ import com.codeborne.selenide.logevents.SelenideLogger;
 import io.qameta.allure.Allure;
 import io.qameta.allure.Step;
 import io.qameta.allure.selenide.AllureSelenide;
+import util.AllureScreenshotExtension;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
 import pages.LoginPage;
 
+@ExtendWith(AllureScreenshotExtension.class)
 public abstract class BaseUITest {
 
   LoginPage loginPage;
@@ -37,6 +40,7 @@ public abstract class BaseUITest {
   @Step("Login as standard_user user")
   public void standardLogin() {
     login("standard_user", "secret_sauce");
+    attachScreenshot("Initial state after Login");
   }
 
   @Step("Login as locked_out_user user")
@@ -52,9 +56,21 @@ public abstract class BaseUITest {
   }
 
   @Step("Attach {name} screenshot")
-  protected void attachScreenshot(String name) {
+  public void attachScreenshot(String name) {
     byte[] screenshot =
         ((TakesScreenshot) WebDriverRunner.getWebDriver()).getScreenshotAs(OutputType.BYTES);
     Allure.getLifecycle().addAttachment(name, "image/png", "png", screenshot);
+  }
+
+  public void attachInventoryScreenshotAfterProductAdded() {
+    attachScreenshot("Inventory State after adding first product");
+  }
+
+  public void attachCartScreenshotAfterProductAdded() {
+    attachScreenshot("Cart State after adding first product");
+  }
+
+  public void attachInitialCheckoutScreenshot() {
+    attachScreenshot("Initial Checkout State");
   }
 }
