@@ -1,3 +1,6 @@
+import com.codeborne.selenide.Condition;
+import io.qameta.allure.Step;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -28,7 +31,7 @@ public class CheckoutTests extends BaseUITest {
         checkoutPage.fillInfo("John", "Doe", "01001");
         checkoutPage.continueCheckout();
         checkoutPage.finishCheckout();
-        confirmationPage.verifyCheckoutSuccess();
+        verifyCheckoutSuccess();
     }
 
     @Test
@@ -39,6 +42,20 @@ public class CheckoutTests extends BaseUITest {
         inventoryPage.goToCart();
         cartPage.proceedToCheckout();
         checkoutPage.continueCheckout();
-        checkoutPage.verifyCheckoutFailed();
+        verifyCheckoutFailed();
+    }
+
+    @Step("Verify checkout failed")
+    public void verifyCheckoutFailed() {
+    Assertions.assertTrue(
+        checkoutPage.getErrorMessage().contains("Error: First Name is required"),
+            "Error: expected error message was not displayed");
+    }
+
+    @Step("Verify checkout successfully completed")
+    public void verifyCheckoutSuccess() {
+        Assertions.assertTrue(
+                confirmationPage.getConfirmationMessage().contains("Thank you for your order!"),
+                "Error: confirmation failed");
     }
 }
