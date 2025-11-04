@@ -1,5 +1,8 @@
+import io.qameta.allure.Step;
 import org.junit.jupiter.api.*;
 import pages.InventoryPage;
+
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class LoginTests extends BaseUITest {
 
@@ -9,14 +12,14 @@ public class LoginTests extends BaseUITest {
   @DisplayName("Login with valid credentials redirects to inventory page")
   void loginWithValidCredentials() {
     standardLogin();
-    loginPage.shouldBeLoggedIn();
+    shouldBeLoggedIn();
   }
 
   @Test
   @DisplayName("Login with invalid credentials shows error message")
   void loginWithInvalidCredentials() {
     lockedLogin();
-    loginPage.shouldSeeError("Username and password do not match");
+    shouldSeeErrorMessage("Username and password do not match");
   }
 
   @Test
@@ -25,6 +28,27 @@ public class LoginTests extends BaseUITest {
     standardLogin();
     inventoryPage.clickBurgerMenu();
     inventoryPage.clickLogoutSideBarLink();
-    loginPage.loginButtonShouldBeVisible();
+    loginButtonShouldBeVisible();
+  }
+
+  @Step("Should login successfully")
+  public void shouldBeLoggedIn() {
+    assertTrue(
+            loginPage.isInventoryContainerVisible(),
+            "Error: Inventory container is not visible");
+  }
+
+  @Step("Should display login failed error")
+  public void shouldSeeErrorMessage(String message) {
+    assertTrue(
+            loginPage.isErrorMessageDisplayed(message),
+            "Error message should be displayed");
+  }
+
+  @Step("Verify login button is displayed")
+  public void loginButtonShouldBeVisible() {
+    assertTrue(
+            loginPage.isLoginButtonDisplayed(),
+            "Login button should be visible");
   }
 }
