@@ -1,51 +1,71 @@
-import io.restassured.RestAssured;
-import io.restassured.http.ContentType;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Test;
 
-import static io.restassured.RestAssured.*;
 import static org.hamcrest.Matchers.*;
 
-public class UserApiTest {
+import io.qameta.allure.Description;
+import io.restassured.http.ContentType;
+import org.junit.jupiter.api.Test;
 
-  @BeforeAll
-  static void setup() {
-    RestAssured.baseURI = "https://reqres.in/api";
-  }
+public class UserApiTest extends BaseApiTest {
 
   @Test
+  @Description("Verify that GET /users?page=2 returns a list of users")
   void getListOfUsers() {
-    given()
+    givenWithLogging()
             .when()
             .get("/users?page=2")
             .then()
+            .log().status()
+            .log().body()
             .statusCode(200)
             .body("page", equalTo(2))
             .body("data", not(empty()));
   }
 
   @Test
+  @Description("Verify that GET /users/2 returns correct user details")
   void getSingleUser() {
-    given()
+    givenWithLogging()
             .when()
             .get("/users/2")
             .then()
+            .log().status()
+            .log().body()
             .statusCode(200)
-            .body("data.id", equalTo(2));
+            .body("data.id", equalTo(2))
+            .body("data.email", containsString("@reqres.in"));
   }
 
   @Test
+  @Description("Verify that POST /users creates a new user")
   void createUser() {
-    given()
+    givenWithLogging()
             .contentType(ContentType.JSON)
-            .body("{\"name\": \"Rod\", \"job\": \"QA\"}")
+            .body("{\"name\": \"Rodion\", \"job\": \"QA Engineer\"}")
             .when()
             .post("/users")
             .then()
+            .log().status()
+            .log().body()
             .statusCode(201)
-            .body("name", equalTo("Rod"))
-            .body("job", equalTo("QA"))
-            .body("id", notNullValue());
+            .body("name", equalTo("Rodion"))
+            .body("job", equalTo("QA Engineer"))
+            .body("id", notNullValue())
+            .body("createdAt", notNullValue());
   }
 
+  @Test
+  @Description("Verify that POST /users fail with 403 on a new user creates with invalid api-key")
+  void createUserWithInvalidApiKey() {
+    givenWithLogging()
+            .contentType(ContentType.JSON)
+            .body("{\"name\": \"Rodion\", \"job\": \"QA Engineer\"}")
+            .header("x-api-key","invalid")
+            .when()
+            .post("/users")
+            .then()
+            .log().status()
+            .log().body()
+            .statusCode(403)
+            .body("error", equalTo("Invalid or inactive API key"));
+  }
 }
