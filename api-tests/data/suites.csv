@@ -1,2 +1,5 @@
 "DESCRIPTION","DURATION IN MS","NAME","PARENT SUITE","START TIME","STATUS","STOP TIME","SUB SUITE","SUITE","TEST CLASS","TEST METHOD"
-"","1911","getUserShouldReturn200()","","Tue Nov 04 14:16:24 UTC 2025","broken","Tue Nov 04 14:16:26 UTC 2025","","UserApiTest","UserApiTest","getUserShouldReturn200"
+"Verify that POST /users fail with 403 on a new user creates with invalid api-key","3396","createUserWithInvalidApiKeyTest()","","Tue Nov 04 19:17:03 UTC 2025","passed","Tue Nov 04 19:17:06 UTC 2025","","UserApiTest","UserApiTest","createUserWithInvalidApiKeyTest"
+"Verify that GET /users?page=2 returns a list of users","195","getListOfUsersTest()","","Tue Nov 04 19:17:06 UTC 2025","passed","Tue Nov 04 19:17:06 UTC 2025","","UserApiTest","UserApiTest","getListOfUsersTest"
+"Verify that GET /users/2 returns correct user details","100","getSingleUserTest()","","Tue Nov 04 19:17:06 UTC 2025","passed","Tue Nov 04 19:17:06 UTC 2025","","UserApiTest","UserApiTest","getSingleUserTest"
+"Verify that POST /users creates a new user","232","createUserWithValidTokenTest()","","Tue Nov 04 19:17:06 UTC 2025","passed","Tue Nov 04 19:17:07 UTC 2025","","UserApiTest","UserApiTest","createUserWithValidTokenTest"
