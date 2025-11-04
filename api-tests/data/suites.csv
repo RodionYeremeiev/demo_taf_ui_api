@@ -1,2 +1,2 @@
 "DESCRIPTION","DURATION IN MS","NAME","PARENT SUITE","START TIME","STATUS","STOP TIME","SUB SUITE","SUITE","TEST CLASS","TEST METHOD"
-"","1741","getUserShouldReturn200()","","Tue Nov 04 00:58:05 UTC 2025","broken","Tue Nov 04 00:58:07 UTC 2025","","UserApiTest","UserApiTest","getUserShouldReturn200"
+"","1951","getUserShouldReturn200()","","Tue Nov 04 01:21:51 UTC 2025","broken","Tue Nov 04 01:21:53 UTC 2025","","UserApiTest","UserApiTest","getUserShouldReturn200"
