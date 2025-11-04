@@ -1,5 +1,3 @@
-import io.qameta.allure.Severity;
-import io.qameta.allure.SeverityLevel;
 import io.qameta.allure.Step;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
@@ -30,5 +28,4 @@ public class InventoryTests extends BaseUITest{
     private void verifyProductPrice(String expected) {
         Assertions.assertEquals(expected, inventoryPage.getFirstProductPrice());
     }
-
 }

@@ -1,8 +1,6 @@
 import static com.codeborne.selenide.Condition.*;
 
 import com.codeborne.selenide.CollectionCondition;
-import io.qameta.allure.Severity;
-import io.qameta.allure.SeverityLevel;
 import org.junit.jupiter.api.*;
 import pages.CartPage;
 import pages.InventoryPage;
@@ -38,6 +36,4 @@ public class CartTests extends BaseUITest {
         cartPage.cartItems.shouldHave(CollectionCondition.size(0));
         cartPage.cartBadgeNumberShouldDisappear();
     }
-    
 }
-

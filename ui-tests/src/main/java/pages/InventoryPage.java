@@ -10,11 +10,8 @@ import lombok.NoArgsConstructor;
 public class InventoryPage {
 
     private final ElementsCollection productList = Selenide.$$(".inventory_item");
-
     private final SelenideElement sortDropdown = $(".product_sort_container");
-
     private final SelenideElement cartBadge = $(".shopping_cart_badge");
-
     private final SelenideElement cartIcon = $(".shopping_cart_link");
 
     @Step("sort by {optionText} text")

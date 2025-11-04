@@ -1,5 +1,3 @@
-import io.qameta.allure.Severity;
-import io.qameta.allure.SeverityLevel;
 import org.junit.jupiter.api.*;
 
 public class LoginTests extends BaseUITest {
@@ -17,5 +15,4 @@ public class LoginTests extends BaseUITest {
     lockedLogin();
     loginPage.shouldSeeError("Username and password do not match");
   }
-
 }

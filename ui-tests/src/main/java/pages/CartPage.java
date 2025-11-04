@@ -9,6 +9,7 @@ import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.$$;
 
 public class CartPage {
+
     public ElementsCollection cartItems = $$(".cart_item");
     public SelenideElement removeButton = $(".cart_item .btn_secondary");
     public SelenideElement checkoutButton = $("#checkout");
@@ -19,12 +20,9 @@ public class CartPage {
         removeButton.click();
     }
 
+    @Step("Proceed to checkout")
     public void proceedToCheckout() {
         checkoutButton.click();
-    }
-
-    public int getCartItemCount() {
-        return cartItems.size();
     }
     
     @Step("Cart icon item counter should disappear")

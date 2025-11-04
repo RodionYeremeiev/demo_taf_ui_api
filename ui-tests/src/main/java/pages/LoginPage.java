@@ -10,13 +10,9 @@ import lombok.NoArgsConstructor;
 public class LoginPage {
 
   private final SelenideElement usernameInput = $("#user-name");
-
   private final SelenideElement passwordInput = $("#password");
-
   private final SelenideElement loginButton = $("#login-button");
-
   private final SelenideElement errorMessage = $(".error-message-container");
-
   private final SelenideElement inventoryContainer = $("#inventory_container");
 
   @Step("Opening SauceDemo")
