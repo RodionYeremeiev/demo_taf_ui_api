@@ -14,7 +14,7 @@ import org.openqa.selenium.TakesScreenshot;
 import pages.LoginPage;
 
 @ExtendWith(AllureScreenshotExtension.class)
-public abstract class BaseUITest {
+public class BaseUITest {
 
   LoginPage loginPage;
 
