@@ -36,7 +36,7 @@ public class LoginTests extends BaseUITest {
   public void shouldBeLoggedIn() {
     assertTrue(
             loginPage.isInventoryContainerVisible(),
-            "Error: Inventory container is not visible");
+            "Error: Inventory container is not displayed");
   }
 
   @Step("Should display login failed error")
