@@ -75,7 +75,7 @@ public class UserApiTest extends BaseApiTest {
   }
 
   @Test
-  @DisplayName("Verify that POST /users fail with 403 on a new user creates with invalid api-key")
+  @DisplayName("Verify that POST /users fail with 403 on a new user creation with invalid api-key")
   void createUserWithInvalidApiKeyTest() {
     givenWithLogging()
         .contentType(ContentType.JSON)

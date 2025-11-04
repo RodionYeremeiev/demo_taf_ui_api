@@ -22,7 +22,7 @@ This project is a scalable, modular test automation framework built with Maven. 
 - ✅ Modular Maven structure for clean separation
 - ✅ Allure HTML reports generated after each test run
 - ✅ GitHub Actions CI pipeline with report artifacts
-- ✅ Java 17+ support with JUnit 5
+- ✅ Java 21 support with JUnit 5
 - ✅ Easy-to-extend for new test layers or environments
 
 ---
@@ -71,5 +71,3 @@ automation-project/
 ```
 
 ---
-
-Would you like me to add badges (build status, Java version, test coverage) or a setup guide for new contributors?
