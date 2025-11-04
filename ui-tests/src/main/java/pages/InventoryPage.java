@@ -26,27 +26,14 @@ public class InventoryPage {
         productList.first().$("button").click();
     }
 
-    public void sortByPriceLowToHigh() {
-        sortBy("Price (low to high)");
-    }
-
-    public String getFirstProductPrice() {
-        return productList.first().$(".inventory_item_price").getText();
-    }
-
     @Step("open cart")
     public void goToCart() {
         cartIcon.click();
     }
 
-    @Step("Cart badge should display product count {count}")
-    public void shouldSeeCartBadge(String count) {
-        cartBadge.shouldHave(com.codeborne.selenide.Condition.text(count));
-    }
-
-    @Step("Product list should display all {expectedCount} products")
-    public void shouldDisplayAllProducts(int expectedCount) {
-        productList.shouldHave(CollectionCondition.size(expectedCount));
+    public boolean isAllProductsDisplayed(int expectedCount) {
+        productList.shouldHave(CollectionCondition.size(6));
+        return productList.size() == expectedCount;
     }
 
     @Step("Click burger-menu")
@@ -58,6 +45,19 @@ public class InventoryPage {
     public void clickLogoutSideBarLink() {
         logoutSideBarLink.shouldBe(Condition.visible);
         logoutSideBarLink.click();
+    }
+
+    public boolean isCartBadgeCountDisplayed(String expectedCount) {
+        cartBadge.shouldBe(Condition.visible);
+        return cartBadge.text().equals(expectedCount);
+    }
+
+    public void sortByPriceLowToHigh() {
+        sortBy("Price (low to high)");
+    }
+
+    public String getFirstProductPrice() {
+        return productList.first().$(".inventory_item_price").getText();
     }
 }
 
