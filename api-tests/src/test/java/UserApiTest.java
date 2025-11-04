@@ -4,8 +4,8 @@ import static org.junit.jupiter.api.Assertions.*;
 import io.restassured.http.ContentType;
 import model.User;
 import model.UserResponse;
-import model.getsingleormultiuserresponse.GetMultiUserResponse;
-import model.getsingleormultiuserresponse.GetSingleUserResponse;
+import model.getuser.GetMultiUserResponse;
+import model.getuser.GetSingleUserResponse;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
