@@ -1,4 +1,3 @@
-Here’s a clean and professional `README.md` tailored for your modular Maven automation project with Allure reporting and GitHub Actions CI:
 
 ---
 
@@ -54,8 +53,8 @@ mvn clean verify -Dheadless=false -Dui.standard.user=standard_user -Dui.valid.pa
 ### ⚙️ CI Integration
 
 GitHub Actions runs tests for both modules and publishes Allure reports as downloadable artifacts:
- - Run UI or API Tests pipeline (defined in test-run.yml)
- - Automatic matrix pipeline execute test in parallel mode for both modules for verification of pull request or push to master (defined in ci.yml)
+ - Run UI or API Tests pipeline (defined in on-demand-test-run.yml)
+ - Automatic matrix pipeline execute test in parallel mode for both modules for verification of pull request or push to master (defined in auto-ci-check.yml)
 
 ---
 
@@ -78,7 +77,10 @@ automation-project/
 │   
 ├── merged-report/
 │   └── index.html
+│   
 ├── generate-allure-report.sh
+├── junit-platform.properties
+│   
 └── .github/workflows/ci.yml
 └── .github/workflows/test-run.yml
 ```
