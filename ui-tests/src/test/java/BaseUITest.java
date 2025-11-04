@@ -16,10 +16,6 @@ import pages.LoginPage;
 @ExtendWith(AllureScreenshotExtension.class)
 public class BaseUITest {
 
-  public static final String STANDARD_USER = System.getProperty("ui.standard.user");
-  public static final String VALID_PASSWORD = System.getProperty("ui.valid.password");
-  public static final String LOCKED_USER = System.getProperty("ui.locked.user");
-
   LoginPage loginPage;
 
   @BeforeAll
@@ -43,13 +39,13 @@ public class BaseUITest {
 
   @Step("Login as standard_user user")
   public void standardLogin() {
-    login(STANDARD_USER, VALID_PASSWORD);
+    login(Constants.STANDARD_USER, Constants.VALID_PASSWORD);
     attachScreenshot("Initial state after Login");
   }
 
   @Step("Login as locked_out_user user")
   public void lockedLogin() {
-    login(LOCKED_USER, "wrong_password");
+    login(Constants.LOCKED_USER, "wrong_password");
   }
 
   @AfterEach
