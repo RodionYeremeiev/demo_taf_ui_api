@@ -1,0 +1,1 @@
+{"106ce675f85bdbb7b352fd31191add9":{"statistic":{"failed":0,"broken":1,"skipped":0,"passed":0,"unknown":0,"total":1},"items":[{"uid":"27448ef7fb8802a0","status":"broken","statusDetails":"api.example.com: Name or service not known","time":{"start":1762266160734,"stop":1762266162379,"duration":1645}}]}}
