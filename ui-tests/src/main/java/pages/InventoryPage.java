@@ -13,6 +13,8 @@ public class InventoryPage {
     private final SelenideElement sortDropdown = $(".product_sort_container");
     private final SelenideElement cartBadge = $(".shopping_cart_badge");
     private final SelenideElement cartIcon = $(".shopping_cart_link");
+    private final SelenideElement burgerMenu = $("#react-burger-menu-btn");
+    private final SelenideElement logoutSideBarLink = $("#logout_sidebar_link");
 
     @Step("sort by {optionText} text")
     public void sortBy(String optionText) {
@@ -45,6 +47,17 @@ public class InventoryPage {
     @Step("Product list should display all {expectedCount} products")
     public void shouldDisplayAllProducts(int expectedCount) {
         productList.shouldHave(CollectionCondition.size(expectedCount));
+    }
+
+    @Step("Click burger-menu")
+    public void clickBurgerMenu() {
+        burgerMenu.click();
+    }
+
+    @Step("Click logout")
+    public void clickLogoutSideBarLink() {
+        logoutSideBarLink.shouldBe(Condition.visible);
+        logoutSideBarLink.click();
     }
 }
 

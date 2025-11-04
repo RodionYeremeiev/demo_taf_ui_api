@@ -66,4 +66,9 @@ public class LoginPage {
       default -> throw new IllegalStateException("Unexpected value: " + logoName.toLowerCase());
     };
   }
+
+  @Step("Verify login button is displayed")
+  public void loginButtonShouldBeVisible() {
+    loginButton.shouldBe(Condition.visible);
+  }
 }
