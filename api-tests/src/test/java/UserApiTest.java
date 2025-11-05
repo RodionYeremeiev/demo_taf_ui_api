@@ -6,6 +6,7 @@ import model.User;
 import model.UserResponse;
 import model.getuser.GetMultiUserResponse;
 import model.getuser.GetSingleUserResponse;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
