@@ -1,4 +1,0 @@
-"DESCRIPTION","DURATION IN MS","NAME","PARENT SUITE","START TIME","STATUS","STOP TIME","SUB SUITE","SUITE","TEST CLASS","TEST METHOD"
-"Verify that POST /users creates a new user","404","createUser()","","Tue Nov 04 15:15:07 UTC 2025","failed","Tue Nov 04 15:15:07 UTC 2025","","UserApiTest","UserApiTest","createUser"
-"Verify that GET /users/2 returns correct user details","116","getSingleUser()","","Tue Nov 04 15:15:07 UTC 2025","passed","Tue Nov 04 15:15:07 UTC 2025","","UserApiTest","UserApiTest","getSingleUser"
-"Verify that GET /users?page=2 returns a list of users","2641","getListOfUsers()","","Tue Nov 04 15:15:04 UTC 2025","passed","Tue Nov 04 15:15:07 UTC 2025","","UserApiTest","UserApiTest","getListOfUsers"
