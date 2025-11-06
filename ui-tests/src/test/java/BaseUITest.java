@@ -26,7 +26,7 @@ public class BaseUITest {
     Configuration.timeout = 5000;
     Configuration.pageLoadStrategy = "normal"; // or "eager", "none"
     Configuration.screenshots = true;
-    Configuration.reportsFolder = "reports/screenshots";
+    Configuration.reportsFolder = "target/allure-results/screenshots";
     Configuration.webdriverLogsEnabled = true;
     SelenideLogger.addListener("allure", new AllureSelenide());
   }
