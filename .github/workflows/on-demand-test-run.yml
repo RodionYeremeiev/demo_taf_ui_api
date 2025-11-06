@@ -11,6 +11,15 @@ on:
         options:
           - ui
           - api
+      browser:
+        description: 'Which browser to run on'
+        required: true
+        default: 'chrome'
+        type: choice
+        options:
+          - chrome
+          - edge
+          - firefox
 
 jobs:
   run-tests:
@@ -27,9 +36,9 @@ jobs:
           distribution: 'temurin'
           java-version: '21'
 
-      - name: Run UI Tests
+      - name: Run UI Tests On ${{ github.event.inputs.browser }} browser
         if: ${{ github.event.inputs.module == 'ui' }}
-        run: mvn -f ui-tests/pom.xml clean test -Dheadless=true -Dui.standard.user=${{ secrets.STD_USER_NAME }} -Dui.valid.password=${{ secrets.STD_PASSWORD }} -Dui.locked.user=${{ secrets.LOCKED_USER_NAME }};
+        run: mvn -f ui-tests/pom.xml clean test -Dui.browser=${{ github.event.inputs.browser }} -Dheadless=true -Dui.standard.user=${{ secrets.STD_USER_NAME }} -Dui.valid.password=${{ secrets.STD_PASSWORD }} -Dui.locked.user=${{ secrets.LOCKED_USER_NAME }};
 
       - name: Run API Tests
         if: ${{ github.event.inputs.module == 'api' }}
@@ -57,4 +66,5 @@ jobs:
         run: |
           echo "## ✅ ${{ github.event.inputs.module }} Test Run Summary" >> $GITHUB_STEP_SUMMARY
           echo "- 🧪 Module: \`${{ github.event.inputs.module }}\`" >> $GITHUB_STEP_SUMMARY
+          echo "- 🌐 Browser: \`${{ github.event.inputs.browser }}\`" >> $GITHUB_STEP_SUMMARY
           echo "- 📊 [View Allure Report](https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/${{ github.event.inputs.module }}/index.html)" >> $GITHUB_STEP_SUMMARY

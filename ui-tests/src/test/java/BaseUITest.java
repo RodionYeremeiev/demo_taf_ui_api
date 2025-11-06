@@ -20,7 +20,7 @@ public class BaseUITest {
 
   @BeforeAll
   public static void globalSetup() {
-    Configuration.browser = "chrome";
+    Configuration.browser = System.getProperty("ui.browser","chrome");
     Configuration.headless = Boolean.parseBoolean(System.getProperty("headless"));
     Configuration.browserSize = "1920x1080";
     Configuration.timeout = 5000;
